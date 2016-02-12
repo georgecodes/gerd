@@ -1,0 +1,54 @@
+{
+  "organisation": "Elevenware",
+  "teams": {
+    "Owners": {
+      "description": null,
+      "privacy": "secret",
+      "members": [
+        "georgecodes"
+      ]
+    },
+    "devs": {
+      "description": "developers",
+      "privacy": "secret",
+      "members": [
+        "georgecodes",
+        "georgemc"
+      ]
+    }
+  },
+  "repositories": {
+    "puppet-bootstrap": {
+      "private": false
+    },
+    "elevenware.github.com": {
+      "private": false
+    },
+    "maven-rpm-example": {
+      "private": false
+    },
+    "simple-spring-app": {
+      "private": false
+    },
+    "sandbox-repo": {
+      "private": false
+    },
+    "basic-maven-app": {
+      "private": false
+    },
+    "jenkins-estate": {
+      "private": false
+    }
+  },
+  "members": {
+    "elevenware-bot": {
+      "id": 16083983
+    },
+    "georgecodes": {
+      "id": 611558
+    },
+    "georgemc": {
+      "id": 3800486
+    }
+  }
+}
