@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'grim'
+
+Grim::CLI.start(ARGV)
