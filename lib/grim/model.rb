@@ -5,6 +5,8 @@ module Grim
 
     class GithubState
 
+      attr_accessor :organisation, :teams, :members, :repositories
+
       def initialize(state_content)
         @content = state_content
         begin
@@ -24,6 +26,11 @@ module Grim
         end
 
         raise 'validation errors' unless failures.length == 0
+
+        @organisation = parsed_content['organisation']
+        @teams = parsed_content['teams']
+        @members = parsed_content['members']
+        @repositories = parsed_content['repositories']
 
       end
 

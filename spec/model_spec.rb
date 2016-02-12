@@ -13,6 +13,46 @@ describe Grim::Model::GithubState do
       
     end
 
+    it "Should pull out the organisation" do
+
+        content = load_fixture('good_state.json')
+    
+        state = Grim::Model::GithubState.new(content)
+
+        expect(state.organisation).to eq "Elevenware"
+
+    end
+
+    it "Should have two teams" do
+
+      content = load_fixture('good_state.json')
+    
+      state = Grim::Model::GithubState.new(content)
+
+      expect(state.teams.length).to eq 2
+
+    end
+
+    it "Should have three members" do
+
+      content = load_fixture('good_state.json')
+    
+      state = Grim::Model::GithubState.new(content)
+
+      expect(state.members.length).to eq 3
+
+    end
+
+    it "Should have seven repositories" do
+
+      content = load_fixture('good_state.json')
+    
+      state = Grim::Model::GithubState.new(content)
+
+      expect(state.repositories.length).to eq 7
+
+    end
+
     it "should not validate malformed json" do
 
       content = "{"
