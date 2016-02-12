@@ -5,6 +5,7 @@ require 'grim/audit'
 require 'grim/github_client'
 require 'grim/formatters'
 require 'grim/validators'
+require 'grim/model'
 
 module Grim
   class CLI < Thor
@@ -29,9 +30,11 @@ module Grim
     def validate(organisation)
       token = options[:token] if options[:token]
       client = Grim::GHClient.create(token)
-      expected_state = 
-      validator = Grim::Validator.new(client)
-      content = validator.validate_users
+      auditor = Grim::Audit.new(client, organisation)
+      expected_state = Grim::Model::GithubState.new(File.read(options[:expected]))
+      actual_state = Grim::Model::GithubState.new(auditor.full_audit)
+      validator = Grim::Validation::Validator.new(expected_state, actual_state)
+      content = validator.validate
       formatter = Grim::Formatters.find_formatter(options[:file])
       formatter.print(content, options)
     end

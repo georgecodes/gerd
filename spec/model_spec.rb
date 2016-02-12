@@ -11,18 +11,14 @@ describe Grim::Model::GithubState do
     
       state = Grim::Model::GithubState.new(content)
       
-      expect(state.valid?).to be true
-
     end
 
     it "should not validate malformed json" do
 
       content = "{"
 
-      state = Grim::Model::GithubState.new(content)
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
       
-      expect(state.valid?).to be false
-
     end
 
     it "should not validate if no organisation is present" do
@@ -34,9 +30,8 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
       
-      expect(state.valid?).to be false
 
     end
 
@@ -49,9 +44,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+     expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -65,9 +58,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -80,9 +71,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -96,9 +85,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -111,9 +98,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -127,9 +112,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      state = Grim::Model::GithubState.new(content)
-      
-      expect(state.valid?).to be false
+      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception 
 
     end
 

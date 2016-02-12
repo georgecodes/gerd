@@ -7,27 +7,31 @@ module Grim
 
       def initialize(state_content)
         @content = state_content
+      end
+
+      def valid?
         begin
-          parsed_content = JSON.parse(state_content)
+          parsed_content = JSON.parse(@content)
         rescue
-          raise 'Parse error'
+          return false
         end
         validators = []
         validators << Grim::Model::Validator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
         validators << Grim::Model::Validator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
         validators << Grim::Model::Validator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
         validators << Grim::Model::Validator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
+        
         failures = []
         validators.each do | validator |
           result = validator.evaluate(parsed_content)
           failures << result unless result.valid?
         end
-
-        raise 'validation errors' unless failures.length == 0
-
+        failures.length == 0
       end
 
     end
+
+
 
     class Validator
 
