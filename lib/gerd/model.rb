@@ -1,30 +1,31 @@
 require 'json'
 
-module Grim
+module Gerd
   module Model
 
     class GithubState
 
-      attr_accessor :organisation, :teams, :members, :repositories
+      attr_accessor :organisation, :teams, :members, :repositories, :failures
 
       def initialize(state_content)
-        @content = state_content
+        
         begin
           parsed_content = JSON.parse(state_content)
         rescue
-          raise 'Parse error'
+          raise "Parse error #{state_content}"
         end
         validators = []
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
         failures = []
         validators.each do | validator |
           result = validator.evaluate(parsed_content)
           failures << result unless result.valid?
         end
 
+        @failures = failures
         raise 'validation errors' unless failures.length == 0
 
         @organisation = parsed_content['organisation']
@@ -36,7 +37,7 @@ module Grim
 
     end
 
-    class Validator
+    class SchemaValidator
 
         def initialize(expression, message)
           @expression = expression
@@ -45,7 +46,7 @@ module Grim
 
         def evaluate(content)
           res = @expression.call(content)
-          Grim::Model::ValidationResult.new(res, @message)
+          Gerd::Model::ValidationResult.new(res, @message)
         end
 
     end

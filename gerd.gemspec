@@ -1,14 +1,14 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'grim/version'
+require 'gerd/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "grim"
-  spec.version       = Grim::VERSION
+  spec.name          = "gerd"
+  spec.version       = Gerd::VERSION
   spec.authors       = ["George McIntosh"]
   spec.email         = ["george@elevenware.com"]
-  spec.description   = %q{Manage GitHub repositories declaratively}
+  spec.description   = %q{Githur hErd: manage GitHub repositories declaratively}
   spec.summary       = %q{Manage your GitHub estate declaratively}
   spec.homepage      = ""
   spec.license       = "MIT"

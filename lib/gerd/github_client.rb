@@ -2,7 +2,7 @@ require 'octokit'
 require 'octokit/repository'
 require 'json'
 
-module Grim
+module Gerd
   class GHClient
 
     def self.create(explicit_token)

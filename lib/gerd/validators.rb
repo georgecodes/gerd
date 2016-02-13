@@ -1,6 +1,6 @@
-require 'grim/model'
+require 'gerd/model'
 
-module Grim
+module Gerd
   module Validation
 
     class Diff
@@ -19,7 +19,7 @@ module Grim
     end
 
     StandardDiffs =[
-          Grim::Validation::Diff.new( Proc.new { | e, a | e.organisation == a.organisation}, "Organisations")
+          Gerd::Validation::Diff.new( Proc.new { | e, a | e.organisation == a.organisation}, "Organisations")
       ]
 
 
@@ -32,7 +32,7 @@ module Grim
 
       def validate
         validation_result = []
-        Grim::Validation::StandardDiffs.each do | validator |
+        Gerd::Validation::StandardDiffs.each do | validator |
           result = validator.validate(@expected, @actual)
           validation_result << result
         end

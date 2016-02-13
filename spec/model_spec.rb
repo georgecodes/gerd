@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'grim/model'
+require 'gerd/model'
 
-describe Grim::Model::GithubState do
+describe Gerd::Model::GithubState do
 
   context "validation" do
 
@@ -9,7 +9,7 @@ describe Grim::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Grim::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.new(content)
       
     end
 
@@ -17,7 +17,7 @@ describe Grim::Model::GithubState do
 
         content = load_fixture('good_state.json')
     
-        state = Grim::Model::GithubState.new(content)
+        state = Gerd::Model::GithubState.new(content)
 
         expect(state.organisation).to eq "Elevenware"
 
@@ -27,7 +27,7 @@ describe Grim::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Grim::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.new(content)
 
       expect(state.teams.length).to eq 2
 
@@ -37,7 +37,7 @@ describe Grim::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Grim::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.new(content)
 
       expect(state.members.length).to eq 3
 
@@ -47,7 +47,7 @@ describe Grim::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Grim::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.new(content)
 
       expect(state.repositories.length).to eq 7
 
@@ -57,7 +57,7 @@ describe Grim::Model::GithubState do
 
       content = "{"
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
       
     end
 
@@ -70,7 +70,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
       
 
     end
@@ -84,7 +84,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-     expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+     expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -98,7 +98,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -111,7 +111,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -125,7 +125,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -138,7 +138,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
 
     end
 
@@ -152,7 +152,7 @@ describe Grim::Model::GithubState do
       }
       JSON
 
-      expect {Grim::Model::GithubState.new(content) }.to raise_error Exception 
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception 
 
     end
 

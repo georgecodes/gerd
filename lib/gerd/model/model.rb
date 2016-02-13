@@ -1,6 +1,6 @@
 require 'json'
 
-module Grim
+module Gerd
   module Model
 
     class GithubState
@@ -16,10 +16,10 @@ module Grim
           return false
         end
         validators = []
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
-        validators << Grim::Model::Validator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
+        validators << Gerd::Model::Validator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
+        validators << Gerd::Model::Validator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
+        validators << Gerd::Model::Validator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
+        validators << Gerd::Model::Validator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
         
         failures = []
         validators.each do | validator |
@@ -42,7 +42,7 @@ module Grim
 
         def evaluate(content)
           res = @expression.call(content)
-          Grim::Model::ValidationResult.new(res, @message)
+          Gerd::Model::ValidationResult.new(res, @message)
         end
 
     end

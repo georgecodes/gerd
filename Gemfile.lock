@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    grim (0.0.1)
+    gerd (0.0.1)
       thor
 
 GEM
@@ -101,7 +101,7 @@ DEPENDENCIES
   aruba
   bundler
   cucumber
-  grim!
+  gerd!
   guard
   guard-rspec
   rake

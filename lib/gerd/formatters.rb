@@ -1,11 +1,11 @@
 require 'json'
 
-module Grim
+module Gerd
   module Formatters
 
     def self.find_formatter(file)
-      return Grim::Formatters::Stdout.new unless file
-      return Grim::Formatters::FileFormatter.new(file)
+      return Gerd::Formatters::Stdout.new unless file
+      return Gerd::Formatters::FileFormatter.new(file)
     end
 
     class Stdout

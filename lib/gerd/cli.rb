@@ -1,13 +1,13 @@
 require 'thor'
 require 'open-uri'
 require 'json'
-require 'grim/audit'
-require 'grim/github_client'
-require 'grim/formatters'
-require 'grim/validators'
-require 'grim/model'
+require 'gerd/audit'
+require 'gerd/github_client'
+require 'gerd/formatters'
+require 'gerd/validators'
+require 'gerd/model'
 
-module Grim
+module Gerd
   class CLI < Thor
 
     desc "audit <organization>", "Introspects the GitHub environment for the given organisation"
@@ -16,10 +16,10 @@ module Grim
     option :overwrite, :type => :boolean, :aliases => ['o']
     def audit(organisation)
       token = options[:token] if options[:token]
-      client = Grim::GHClient.create(token)
-      auditor = Grim::Audit.new(client, organisation)
+      client = Gerd::GHClient.create(token)
+      auditor = Gerd::Audit.new(client, organisation)
       content = auditor.full_audit
-      formatter = Grim::Formatters.find_formatter(options[:file])
+      formatter = Gerd::Formatters.find_formatter(options[:file])
       formatter.print(content, options)
     end
 
@@ -29,13 +29,13 @@ module Grim
     option :file, :type => :string, :aliases => ['f']
     def validate(organisation)
       token = options[:token] if options[:token]
-      client = Grim::GHClient.create(token)
-      auditor = Grim::Audit.new(client, organisation)
-      expected_state = Grim::Model::GithubState.new(File.read(options[:expected]))
-      actual_state = Grim::Model::GithubState.new(auditor.full_audit)
-      validator = Grim::Validation::Validator.new(expected_state, actual_state)
+      client = Gerd::GHClient.create(token)
+      auditor = Gerd::Audit.new(client, organisation)
+      expected_state = Gerd::Model::GithubState.new(File.read(options[:expected]))
+      actual_state = Gerd::Model::GithubState.new(auditor.full_audit)
+      validator = Gerd::Validation::Validator.new(expected_state, actual_state)
       content = validator.validate
-      formatter = Grim::Formatters.find_formatter(options[:file])
+      formatter = Gerd::Formatters.find_formatter(options[:file])
       formatter.print(content, options)
     end
 

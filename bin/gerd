@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'gerd'
+
+Gerd::CLI.start(ARGV)
