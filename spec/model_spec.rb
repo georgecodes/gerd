@@ -1,5 +1,6 @@
 require 'spec_helper'
-require 'gerd/model'
+require 'gerd/model/model'
+require 'gerd/exceptions'
 
 describe Gerd::Model::GithubState do
 
@@ -9,7 +10,7 @@ describe Gerd::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Gerd::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.from_json(content)
       
     end
 
@@ -17,7 +18,7 @@ describe Gerd::Model::GithubState do
 
         content = load_fixture('good_state.json')
     
-        state = Gerd::Model::GithubState.new(content)
+        state = Gerd::Model::GithubState.from_json(content)
 
         expect(state.organisation).to eq "Elevenware"
 
@@ -27,7 +28,7 @@ describe Gerd::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Gerd::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.from_json(content)
 
       expect(state.teams.length).to eq 2
 
@@ -37,7 +38,7 @@ describe Gerd::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Gerd::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.from_json(content)
 
       expect(state.members.length).to eq 3
 
@@ -47,7 +48,7 @@ describe Gerd::Model::GithubState do
 
       content = load_fixture('good_state.json')
     
-      state = Gerd::Model::GithubState.new(content)
+      state = Gerd::Model::GithubState.from_json(content)
 
       expect(state.repositories.length).to eq 7
 
@@ -57,102 +58,89 @@ describe Gerd::Model::GithubState do
 
       content = "{"
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.from_json(content) }.to raise_error Gerd::Exceptions::ValidationException
       
     end
 
     it "should not validate if no organisation is present" do
-      content = <<-JSON
-      {
-        "teams": {},
-        "repositories": {},
-        "members": {}
+      content = {
+        "teams" => {},
+        "repositories" => {},
+        "members" => {}
       }
-      JSON
+      
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
       
 
     end
 
     it "should not validate if no team element is present" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "repositories": {},
-        "members": {}
+      content = { 
+        "organisation" => "test",
+        "repositories" => {},
+        "members" => {}
       }
-      JSON
 
-     expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+     expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
 
     end
 
     it "should not validate if the team element is not an object" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "teams": "a string",
-        "repositories": {},
-        "members": {}
+      content = { 
+        "organisation" => "test",
+        "teams" => "a string",
+        "repositories" => {},
+        "members" => {}
       }
-      JSON
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
 
     end
 
     it "should not validate if no repositories element is present" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "teams": {},
-        "members": {}
+      content = { 
+        "organisation" => "test",
+        "teams" => {},
+        "members" => {}
       }
-      JSON
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
 
     end
 
     it "should not validate if the repositories element is not an object" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "teams": {},
-        "repositories": "dve",
-        "members": {}
+      content = { 
+        "organisation" => "test",
+        "teams" => {},
+        "repositories" => "dve",
+        "members" => {}
       }
-      JSON
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
 
     end
 
     it "should not validate if no members element is present" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "teams": {},
-        "repositories": {}
+      content = { 
+        "organisation" => "test",
+        "teams" => {},
+        "repositories" => {}
       }
-      JSON
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException
 
     end
 
     it "should not validate if the members element is not an object" do
-      content = <<-JSON
-      { 
-        "organisation": "test",
-        "teams": {},
-        "repositories": {},
-        "members": ""
+      content = { 
+        "organisation" => "test",
+        "teams" => {},
+        "repositories" => {},
+        "members" => ""
       }
-      JSON
 
-      expect {Gerd::Model::GithubState.new(content) }.to raise_error Exception 
+      expect {Gerd::Model::GithubState.new(content) }.to raise_error Gerd::Exceptions::ValidationException 
 
     end
 

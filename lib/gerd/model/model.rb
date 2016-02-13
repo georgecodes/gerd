@@ -1,39 +1,48 @@
 require 'json'
+require 'gerd/exceptions'
 
 module Gerd
   module Model
 
     class GithubState
 
-      def initialize(state_content)
-        @content = state_content
+      attr_accessor :organisation, :teams, :members, :repositories, :failures
+
+      def self.from_json(json)
+         begin
+          return Gerd::Model::GithubState.new(JSON.parse(json))
+        rescue => e
+          raise Gerd::Exceptions::ValidationException.new("Couldn't parse JSON")
+        end
+        
       end
 
-      def valid?
-        begin
-          parsed_content = JSON.parse(@content)
-        rescue
-          return false
-        end
-        validators = []
-        validators << Gerd::Model::Validator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
-        validators << Gerd::Model::Validator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
-        validators << Gerd::Model::Validator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
-        validators << Gerd::Model::Validator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
+      def initialize(state_content)
         
+        validators = []
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['organisation'] != nil }, "Should have an organisation present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['teams'].class == Hash }, "Should have a teams element present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['repositories'].class == Hash }, "Should have a repositories element present")
+        validators << Gerd::Model::SchemaValidator.new( Proc.new { | data | data['members'].class == Hash }, "Should have a members element present")
         failures = []
         validators.each do | validator |
-          result = validator.evaluate(parsed_content)
+          result = validator.evaluate(state_content)
           failures << result unless result.valid?
         end
-        failures.length == 0
+
+        @failures = failures
+        raise Gerd::Exceptions::ValidationException.new("Failed to validate") unless failures.length == 0
+
+        @organisation = state_content['organisation']
+        @teams = state_content['teams']
+        @members = state_content['members']
+        @repositories = state_content['repositories']
+
       end
 
     end
 
-
-
-    class Validator
+    class SchemaValidator
 
         def initialize(expression, message)
           @expression = expression
