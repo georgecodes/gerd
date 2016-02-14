@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "guard-rspec"
 
   spec.add_dependency "thor"
+  spec.add_dependency "require_all"
 end

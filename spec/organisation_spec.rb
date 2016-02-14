@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'gerd/model/model'
-require 'gerd/inspections/inspections'
+require 'gerd/inspections/organisation/organisation'
+
 
 describe "organisation diff" do
 
@@ -22,19 +23,17 @@ describe "organisation diff" do
       "repositories" => {}
     })
 
+    diff = Gerd::Inspections::Organisation::inspect_organisations(expected, actual)
+
     it "should spot same organisations" do
-  
-      diff = Gerd::Inspections::inspect_organisations(expected, actual)
       
       expect(diff.passed).to be true
 
     end
 
-    it "should spot same teams" do
+    it "should give us no actions" do
 
-      diff = Gerd::Inspections::inspect_teams(expected, actual)
-      
-      expect(diff.passed).to be true
+      expect(diff.actions.length).to be 0
 
     end
 
@@ -58,11 +57,17 @@ describe "organisation diff" do
       "repositories" => {}
     })
 
-    it "should spot same organisations" do
+    diff = Gerd::Inspections::Organisation::inspect_organisations(expected, actual)
+     
+    it "should spot different organisations" do
   
-      diff = Gerd::Inspections::inspect_organisations(expected, actual)
-      
       expect(diff.passed).to be false
+
+    end
+
+    it "should give us a name change action" do
+
+      expect(diff.actions.length).to be 1
 
     end
 
