@@ -6,6 +6,7 @@ require 'gerd/github_client'
 require 'gerd/formatters'
 require 'gerd/validators'
 require 'gerd/model/model'
+require 'gerd/invoke'
 
 module Gerd
   class CLI < Thor
@@ -54,6 +55,19 @@ module Gerd
       actions.each do | action |
         action.invoke(client, options)
       end
+    end
+
+    desc "exec <script>", "Runs arbitrary scripts against your audit file"
+    option :input, :type => :string, :aliases => ['i'], :required => true
+    option :output, :type => :string, :aliases => ['o']
+    def exec(script)
+      current_state = Gerd::Model::GithubState.from_json(File.read(options[:input]))
+      script = File.read(script)
+      exec_helper = Gerd::Helpers::Exec.new(script)
+      exec_helper.exec(current_state)
+      formatter = Gerd::Formatters.find_formatter(options[:output])
+      formatter.print(current_state.serialize, options)
+      
     end
 
   end

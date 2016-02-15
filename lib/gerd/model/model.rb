@@ -47,6 +47,15 @@ module Gerd
 
       end
 
+      def serialize
+        json = { 'organisation' => @organisation,
+          'teams' => @teams,
+          'members' => @members,
+          'repositories' => @repositories
+        }
+        json
+      end
+
     end
 
     class SchemaValidator
