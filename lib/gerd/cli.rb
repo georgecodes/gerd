@@ -41,6 +41,7 @@ module Gerd
 
     desc "sync <organisation>", "Synchronises audit data with GitHub"
     option :file, :type => :string, :aliases => ['f'], :required => true
+    option :token, :type => :string, :aliases => ['t']
     option :delete, :type => :boolean
     def sync(organisation)
       token = options[:token] if options[:token]
