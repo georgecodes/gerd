@@ -11,13 +11,12 @@ module Gerd
         end
 
         def invoke(client, options = {})
-          puts "I WANT TO CREATE #{@org}/#{@repo}"
+          puts "Creating #{@org}/#{@repo}"
           opts = { 
             :organization => @org,
             :private => @privacy
           }
           res = client.create_repo(@repo, { :organization => @org })
-          puts res
         end
 
       end
