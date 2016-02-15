@@ -1,4 +1,6 @@
 require 'gerd/model/model'
+require 'gerd/inspections/diffs/organisation'
+require 'gerd/inspections/diffs/repositories'
 
 module Gerd
   module Validation
@@ -32,11 +34,9 @@ module Gerd
 
       def validate
         validation_result = []
-        Gerd::Validation::StandardDiffs.each do | validator |
-          result = validator.validate(@expected, @actual)
-          validation_result << result
-        end
-        validation_result
+        validation_result << Gerd::Inspections::Organisation.inspect_organisations(@expected, @actual)
+        validation_result << Gerd::Inspections::Repositories.inspect_repositories(@expected, @actual)
+        report = validation_result.flatten.collect { | res | res.message }
       end
 
     end

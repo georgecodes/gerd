@@ -49,6 +49,7 @@ module Gerd
         actual_repos= actual.repositories
 
         actual_repos.keys.each do | repo |
+          
           if !expected_repos.keys.include? repo
             action = Gerd::Inspections::Actions::DeleteRepo.new(actual_repos[repo])
             diffs << Gerd::Inspections::Diff.new(false, "I did not expect to see repository #{repo} but saw it anyway", [action])
