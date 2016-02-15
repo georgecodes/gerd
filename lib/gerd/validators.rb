@@ -1,4 +1,4 @@
-require 'gerd/model'
+require 'gerd/model/model'
 
 module Gerd
   module Validation

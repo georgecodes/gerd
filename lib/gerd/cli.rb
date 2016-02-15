@@ -1,11 +1,11 @@
 require 'thor'
 require 'open-uri'
 require 'json'
-require 'gerd/audit'
+require 'gerd/audit/audit'
 require 'gerd/github_client'
 require 'gerd/formatters'
 require 'gerd/validators'
-require 'gerd/model'
+require 'gerd/model/model'
 
 module Gerd
   class CLI < Thor
