@@ -31,7 +31,7 @@ module Gerd
       token = options[:token] if options[:token]
       client = Gerd::GHClient.create(token)
       auditor = Gerd::Audit.new(client, organisation)
-      expected_state = Gerd::Model::GithubState.new(File.read(options[:expected]))
+      expected_state = Gerd::Model::GithubState.from_json(File.read(options[:expected]))
       actual_state = Gerd::Model::GithubState.new(auditor.full_audit)
       validator = Gerd::Validation::Validator.new(expected_state, actual_state)
       content = validator.validate

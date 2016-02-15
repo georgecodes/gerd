@@ -12,6 +12,7 @@ module Gerd
          begin
           return Gerd::Model::GithubState.new(JSON.parse(json))
         rescue => e
+          puts json
           raise Gerd::Exceptions::ValidationException.new("Couldn't parse JSON")
         end
         
@@ -31,7 +32,13 @@ module Gerd
         end
 
         @failures = failures
-        raise Gerd::Exceptions::ValidationException.new("Failed to validate") unless failures.length == 0
+        if failures.length != 0 
+           failures.each do | failure |
+              puts failure.message
+            end
+            puts state_content
+           raise Gerd::Exceptions::ValidationException.new("Failed to validate #{failures}") 
+        end
 
         @organisation = state_content['organisation']
         @teams = state_content['teams']
@@ -58,6 +65,8 @@ module Gerd
 
     class ValidationResult
 
+      attr_accessor :message
+
       def initialize(result, message)
         @result = result
         @message = message
@@ -65,6 +74,10 @@ module Gerd
 
       def valid?
         @result
+      end
+
+      def to_s
+        puts @message
       end
 
     end

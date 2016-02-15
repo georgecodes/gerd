@@ -19,7 +19,7 @@ module Gerd
     end
 
     StandardDiffs =[
-          Gerd::Validation::Diff.new( Proc.new { | e, a | e.organisation == a.organisation}, "Organisations")
+          Gerd::Validation::Diff.new( Proc.new { | e, a | e.organisation == a.organisation}, "Organisations"),
       ]
 
 
