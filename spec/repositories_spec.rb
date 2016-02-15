@@ -135,5 +135,89 @@ describe 'repositories inspection' do
     end 
 
   end
+
+  context 'repository should be private' do
+
+    expected = Gerd::Model::GithubState.new( 
+    { 
+      "organisation" => "Test organisation",
+      "teams" => {},
+      "members" => {},
+      "repositories" => {
+        "foo" => {
+          "private" => true
+        }
+      }
+    })
+
+    actual = Gerd::Model::GithubState.new( 
+    { 
+      "organisation" => "Test organisation",
+      "teams" => {},
+      "members" => {},
+      "repositories" => {
+        "foo" => {
+          "private" => false
+        }
+      }
+    })
+
+    diffs = Gerd::Inspections::Repositories::inspect_repositories(expected, actual)
+
+    it "should give me 1 diff" do
+
+      expect(diffs.length).to be 1
+
+      expect(diffs[0].message).to eq "I expected repo foo to be private, but it is not"
+
+      expect(diffs[0].actions.length).to be 1
+
+      expect(diffs[0].actions[0].class).to be Gerd::Inspections::Actions::ChangeRepoPrivacy
+
+    end 
+
+  end
+
+  context 'repository should be public' do
+
+    expected = Gerd::Model::GithubState.new( 
+    { 
+      "organisation" => "Test organisation",
+      "teams" => {},
+      "members" => {},
+      "repositories" => {
+        "foo" => {
+          "private" => false
+        }
+      }
+    })
+
+    actual = Gerd::Model::GithubState.new( 
+    { 
+      "organisation" => "Test organisation",
+      "teams" => {},
+      "members" => {},
+      "repositories" => {
+        "foo" => {
+          "private" => true
+        }
+      }
+    })
+
+    diffs = Gerd::Inspections::Repositories::inspect_repositories(expected, actual)
+
+    it "should give me 1 diff" do
+
+      expect(diffs.length).to be 1
+
+      expect(diffs[0].message).to eq "I did not expect repo foo to be private, but it is"
+
+      expect(diffs[0].actions.length).to be 1
+
+      expect(diffs[0].actions[0].class).to be Gerd::Inspections::Actions::ChangeRepoPrivacy
+
+    end 
+
+  end
   
 end

@@ -1,6 +1,7 @@
 require 'gerd/inspections/diff'
 require 'gerd/inspections/actions/create_repo'
 require 'gerd/inspections/actions/delete_repo'
+require 'gerd/inspections/actions/change_repo_privacy'
 
 module Gerd
   module Inspections
@@ -14,6 +15,8 @@ module Gerd
         diffs << inspect_required_repos_exist(expected, actual)
 
         diffs << inspect_no_extra_repos_exist(expected, actual)
+
+        diffs << inspect_repo_privacy(expected, actual)
 
         diffs.flatten
         
@@ -51,6 +54,30 @@ module Gerd
             diffs << Gerd::Inspections::Diff.new(false, "I did not expect to see repository #{repo} but saw it anyway", [action])
           end
 
+        end
+
+        diffs
+
+      end
+
+      def self.inspect_repo_privacy(expected, actual)
+
+        diffs = []
+
+        expected_repos = expected.repositories
+        actual_repos= actual.repositories
+
+        expected_repos.each do | repo_name, expected_repo |
+          actual_repo = actual_repos[repo_name]
+          next if !actual_repo
+          if expected_repo['private'] == true && actual_repo['private'] == false
+            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(actual_repo, true)
+            diffs << Gerd::Inspections::Diff.new(false, "I expected repo #{repo_name} to be private, but it is not", [action])
+          end
+          if expected_repo['private'] == false && actual_repo['private'] == true
+            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(actual_repo, false)
+            diffs << Gerd::Inspections::Diff.new(false, "I did not expect repo #{repo_name} to be private, but it is", [action])
+          end
         end
 
         diffs
