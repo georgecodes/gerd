@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'gerd/model/model'
-require 'gerd/inspections/organisation/organisation'
+require 'gerd/inspections/diffs/organisation'
 
 
 describe "organisation diff" do

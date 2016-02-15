@@ -1,4 +1,4 @@
-require 'gerd/inspections/organisation/update_name_action'
+require 'gerd/inspections/actions/update_name_action'
 
 module Gerd
   module Inspections
