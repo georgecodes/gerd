@@ -48,7 +48,7 @@ First steps are to create a snapshot of your organisation
     $ gerd audit meet-gerd -f gerd.json
 
 This captures the data in a file which now models your organisation. It will look like this
-
+ ```
    {
      "organisation": "meet-gerd",
      "teams": {
@@ -61,7 +61,7 @@ This captures the data in a file which now models your organisation. It will loo
        }
     }
   }
-
+```
 #### gerd validate
 
 At any point, you can see if your model file matches reality
