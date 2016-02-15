@@ -39,5 +39,21 @@ module Gerd
       formatter.print(content, options)
     end
 
+    desc "sync <organisation>", "Synchronises audit data with GitHub"
+    option :file, :type => :string, :aliases => ['f'], :required => true
+    option :delete, :type => :boolean
+    def sync(organisation)
+      token = options[:token] if options[:token]
+      client = Gerd::GHClient.create(token)
+      auditor = Gerd::Audit.new(client, organisation)
+      expected_state = Gerd::Model::GithubState.from_json(File.read(options[:file]))
+      actual_state = Gerd::Model::GithubState.new(auditor.full_audit)
+      validator = Gerd::Validation::Validator.new(expected_state, actual_state)
+      actions = validator.collect_actions.flatten
+      actions.each do | action |
+        action.invoke(client, options)
+      end
+    end
+
   end
 end

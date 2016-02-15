@@ -29,10 +29,12 @@ module Gerd
         expected_repos = expected.repositories
         actual_repos= actual.repositories
 
-        expected_repos.keys.each do | expected |
-          if !actual_repos.keys.include? expected
-            action = Gerd::Inspections::Actions::CreateRepo.new(expected_repos[expected])
-            diffs << Gerd::Inspections::Diff.new(false, "I expected to see repository #{expected} but did not", [action])
+        expected_repos.keys.each do | expected_repo |
+          if !actual_repos.keys.include? expected_repo
+            repo_to_create = expected_repos[expected_repo]
+            privacy = repo_to_create['privacy']
+            action = Gerd::Inspections::Actions::CreateRepo.new(expected_repo, expected.organisation, privacy)
+            diffs << Gerd::Inspections::Diff.new(false, "I expected to see repository #{expected_repo} but did not", [action])
           end
 
         end
@@ -49,9 +51,9 @@ module Gerd
         actual_repos= actual.repositories
 
         actual_repos.keys.each do | repo |
-          
+
           if !expected_repos.keys.include? repo
-            action = Gerd::Inspections::Actions::DeleteRepo.new(actual_repos[repo])
+            action = Gerd::Inspections::Actions::DeleteRepo.new(repo, expected.organisation)
             diffs << Gerd::Inspections::Diff.new(false, "I did not expect to see repository #{repo} but saw it anyway", [action])
           end
 

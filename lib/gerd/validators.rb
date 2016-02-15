@@ -37,8 +37,15 @@ module Gerd
         validation_result << Gerd::Inspections::Organisation.inspect_organisations(@expected, @actual)
         validation_result << Gerd::Inspections::Repositories.inspect_repositories(@expected, @actual)
         report = validation_result.flatten.collect { | res | res.message }
+        report
       end
 
+      def collect_actions
+        actions = []
+        actions << Gerd::Inspections::Organisation.inspect_organisations(@expected, @actual)
+        actions << Gerd::Inspections::Repositories.inspect_repositories(@expected, @actual)
+        actions.flatten.collect { | res | res.actions }
+      end
     end
 
  end   
