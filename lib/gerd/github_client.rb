@@ -8,7 +8,7 @@ module Gerd
     def self.create(explicit_token)
       Octokit.auto_paginate = true
       token = explicit_token 
-      token = ENV['GRIM_TOKEN'] unless token
+      token = ENV['GERD_TOKEN'] unless token
       token = from_local unless token
       token = from_global unless token
       client = token ? Octokit::Client.new(:access_token => token) : client = Octokit::Client.new
@@ -16,7 +16,7 @@ module Gerd
     end
 
     def self.from_local()
-       file = File.join(Dir.pwd, ".grim")
+       file = File.join(Dir.pwd, ".gerd")
        return unless File.exist?(file)
        local_file = File.read(file)
        grim_conf = JSON.parse(local_file)
@@ -24,7 +24,7 @@ module Gerd
     end
   
     def self.from_global()
-        file = File.join(ENV['HOME'], ".grim")
+        file = File.join(ENV['HOME'], ".gerd")
         return unless File.exist?(file)
         global_file = File.read(file)
         grim_conf = JSON.parse(global_file)
