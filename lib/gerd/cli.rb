@@ -40,11 +40,11 @@ module Gerd
       formatter.print(content, options)
     end
 
-    desc "sync <organisation>", "Synchronises audit data with GitHub"
+    desc "apply <organisation>", "Applies supplied model to GitHub"
     option :file, :type => :string, :aliases => ['f'], :required => true
     option :token, :type => :string, :aliases => ['t']
     option :delete, :type => :boolean
-    def sync(organisation)
+    def apply(organisation)
       token = options[:token] if options[:token]
       client = Gerd::GHClient.create(token)
       auditor = Gerd::Audit.new(client, organisation)
