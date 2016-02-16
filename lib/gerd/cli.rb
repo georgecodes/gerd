@@ -70,5 +70,19 @@ module Gerd
       
     end
 
+    def method_missing(method, *args)
+      
+      paths = ENV['PATH'].split(File::PATH_SEPARATOR)
+      paths.each do | path |
+        candidate = File.join(path, "gerd-#{method}")
+        if File.exists?(candidate)
+          ext = File.read(candidate)
+          eval ext
+          invoke_ext(nil)
+          return
+        end
+      end
+    end
+
   end
 end
