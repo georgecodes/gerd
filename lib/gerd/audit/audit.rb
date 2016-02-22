@@ -45,10 +45,20 @@ module Gerd
           team_members << member.login
           
         end
+        repos = @client.team_repos(team.id)
+        team_repos = []
+        repos.each do | repo |
+          team_repos << {
+            :id => repo.id,
+            :name => repo.name
+          }
+        end
         team_conf[team.name] = {
+          :id => team.id,
           :description => team.description,
           :privacy => team.privacy,
-          :members => team_members
+          :members => team_members,
+          :repos => team_repos
         }
       end
       team_conf
