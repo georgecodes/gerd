@@ -28,7 +28,7 @@ module Gerd
       
       repos.each do | repo |
         repo_conf = {
-          :private => repo.private
+          'private' => repo.private
         }
         repositories[repo.name] = repo_conf
       end

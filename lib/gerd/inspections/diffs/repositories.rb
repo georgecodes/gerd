@@ -74,11 +74,13 @@ module Gerd
           actual_repo = actual_repos[repo_name]
           next if !actual_repo
           if expected_repo['private'] == true && actual_repo['private'] == false
-            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(actual_repo, true)
+            full_name = "#{expected.organisation}/#{repo_name}"
+            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(full_name, true)
             diffs << Gerd::Inspections::Diff.new(false, "I expected repo #{repo_name} to be private, but it is not", [action])
           end
           if expected_repo['private'] == false && actual_repo['private'] == true
-            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(actual_repo, false)
+            full_name = "#{expected.organisation}/#{repo_name}"
+            action = Gerd::Inspections::Actions::ChangeRepoPrivacy.new(full_name, false)
             diffs << Gerd::Inspections::Diff.new(false, "I did not expect repo #{repo_name} to be private, but it is", [action])
           end
         end
